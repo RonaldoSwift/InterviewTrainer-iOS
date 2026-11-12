@@ -1,33 +1,44 @@
+
 import SwiftUI
 
-struct ContentView: View {
-    var body: some View {
+public struct HomeView: View {
+
+    @State private var viewModel = HomeViewModel()
+
+    public init() {}
+
+    public var body: some View {
         NavigationStack {
             VStack(spacing: 16) {
                 Image(systemName: "brain.head.profile")
                     .font(.system(size: 64))
                     .foregroundStyle(.blue)
 
-                Text("InterviewTrainer AI")
+                Text(viewModel.title)
                     .font(.largeTitle)
                     .fontWeight(.bold)
 
-                Text("Prepárate para tu próxima entrevista técnica de iOS.")
+                Text(viewModel.subtitle)
                     .font(.body)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
 
                 Button("Comenzar práctica") {
-                    print("Iniciando práctica...")
+                    viewModel.startPractice()
                 }
                 .buttonStyle(.borderedProminent)
             }
             .padding()
             .navigationTitle("Inicio")
+            .alert("¡Vamos a practicar!", isPresented: $viewModel.isShowingPractice) {
+                Button("Aceptar", role: .cancel) {}
+            } message: {
+                Text("Tu primera práctica estará disponible próximamente.")
+            }
         }
     }
 }
 
 #Preview {
-    ContentView()
+    HomeView()
 }

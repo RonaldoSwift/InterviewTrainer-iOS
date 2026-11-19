@@ -16,7 +16,12 @@ public struct PracticeSessionView: View {
     public var body: some View {
         NavigationStack {
             Group {
-                if viewModel.isFinished {
+                if viewModel.state == .empty {
+                    emptyView
+                } else if viewModel.state == .error,
+                          let errorMessage = viewModel.errorMessage {
+                    sessionErrorView(errorMessage)
+                } else if viewModel.isFinished {
                     resultView
                 } else {
                     questionView
@@ -50,6 +55,9 @@ public struct PracticeSessionView: View {
                             total: Double(viewModel.totalQuestions)
                         )
                         .tint(.cyan)
+                        .accessibilityLabel(
+                            "Progreso: pregunta \(viewModel.questionNumber) de \(viewModel.totalQuestions)"
+                        )
                     }
                     .padding(16)
                     .background(Color.white.opacity(0.06))
@@ -60,6 +68,7 @@ public struct PracticeSessionView: View {
                         .fontWeight(.bold)
                         .foregroundStyle(.white)
                         .padding(.top, 4)
+                        .accessibilityAddTraits(.isHeader)
 
                     VStack(spacing: 12) {
                         ForEach(viewModel.currentQuestion.options, id: \.optionId) { option in
@@ -103,6 +112,9 @@ public struct PracticeSessionView: View {
                             }
                             .buttonStyle(.plain)
                             .disabled(viewModel.isShowingFeedback)
+                            .frame(minHeight: 56)
+                            .contentShape(Rectangle())
+                            .accessibilityLabel(alternativeAccessibilityLabel(for: option.optionId, text: option.text))
                         }
                     }
 
@@ -130,6 +142,7 @@ public struct PracticeSessionView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(Color.white.opacity(0.07))
                         .clipShape(RoundedRectangle(cornerRadius: 14))
+                        .accessibilityElement(children: .combine)
                     }
                 }
                 .padding(.horizontal, 20)
@@ -160,9 +173,12 @@ public struct PracticeSessionView: View {
                         )
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .frame(minHeight: 56)
+                    .contentShape(Rectangle())
                     .padding(.horizontal, 20)
                     .padding(.top, 12)
                     .padding(.bottom, 16)
+                    .accessibilityHint("Muestra la siguiente pregunta")
                 } else {
                     Button("Responder") {
                         viewModel.submitAnswer()
@@ -186,9 +202,16 @@ public struct PracticeSessionView: View {
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     .disabled(!viewModel.canSubmitAnswer)
+                    .frame(minHeight: 56)
+                    .contentShape(Rectangle())
                     .padding(.horizontal, 20)
                     .padding(.top, 12)
                     .padding(.bottom, 16)
+                    .accessibilityHint(
+                        viewModel.canSubmitAnswer
+                        ? "Valida la alternativa seleccionada"
+                        : "Selecciona una alternativa antes de responder"
+                    )
                 }
             }
             .background(Color(red: 0.035, green: 0.055, blue: 0.12))
@@ -201,6 +224,7 @@ public struct PracticeSessionView: View {
                 .font(.system(size: 64))
                 .foregroundStyle(.yellow)
                 .padding(.top, 28)
+                .accessibilityLabel("Práctica completada")
 
             Text("¡Práctica completada!")
                 .font(.title)
@@ -247,10 +271,69 @@ public struct PracticeSessionView: View {
                 )
             )
             .clipShape(RoundedRectangle(cornerRadius: 16))
+            .frame(minHeight: 56)
+            .contentShape(Rectangle())
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 20)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var emptyView: some View {
+        VStack(spacing: 16) {
+            Spacer()
+            Image(systemName: "questionmark.circle")
+                .font(.system(size: 52))
+                .foregroundStyle(.cyan)
+                .accessibilityHidden(true)
+
+            Text("No hay preguntas disponibles")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundStyle(.white)
+                .multilineTextAlignment(.center)
+
+            Text("Regresa y genera otra práctica.")
+                .foregroundStyle(.white.opacity(0.72))
+                .multilineTextAlignment(.center)
+            Spacer()
+        }
+        .padding(24)
+    }
+
+    private func sessionErrorView(_ message: String) -> some View {
+        VStack(spacing: 16) {
+            Spacer()
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 52))
+                .foregroundStyle(.yellow)
+                .accessibilityHidden(true)
+
+            Text(message)
+                .font(.title3)
+                .fontWeight(.bold)
+                .foregroundStyle(.white)
+                .multilineTextAlignment(.center)
+
+            Button("Intentar esta pregunta nuevamente") {
+                viewModel.retryFeedback()
+            }
+            .font(.headline)
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .frame(minHeight: 56)
+            .contentShape(Rectangle())
+            .background(
+                LinearGradient(
+                    colors: [.purple, .cyan],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            Spacer()
+        }
+        .padding(24)
     }
 
     private func optionBackground(for optionId: String) -> Color {
@@ -328,5 +411,25 @@ public struct PracticeSessionView: View {
                 .stroke(color.opacity(0.45), lineWidth: 1)
         )
         .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+
+    private func alternativeAccessibilityLabel(
+        for optionId: String,
+        text: String
+    ) -> String {
+        var status = ""
+
+        if viewModel.isShowingFeedback {
+            if optionId == viewModel.currentFeedback?.correctOptionId {
+                status = "Alternativa correcta"
+            } else if optionId == viewModel.selectedOptionId {
+                status = "Tu alternativa incorrecta"
+            }
+        } else if optionId == viewModel.selectedOptionId {
+            status = "Alternativa seleccionada"
+        }
+
+        let prefix = status.isEmpty ? "Alternativa \(optionId)" : "Alternativa \(optionId), \(status)"
+        return "\(prefix). \(text)"
     }
 }

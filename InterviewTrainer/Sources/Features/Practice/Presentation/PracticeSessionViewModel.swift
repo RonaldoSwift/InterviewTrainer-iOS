@@ -5,6 +5,15 @@ import Observation
 @MainActor
 public final class PracticeSessionViewModel {
 
+    public enum SessionState: Equatable {
+        case empty
+        case questionWithoutResponse
+        case responseSelected
+        case feedback
+        case results
+        case error
+    }
+
     public let exam: Exam
 
     public private(set) var currentQuestionIndex = 0
@@ -16,6 +25,7 @@ public final class PracticeSessionViewModel {
     public private(set) var incorrectAnswers = 0
 
     public private(set) var currentFeedback: MockQuestionFeedback?
+    public private(set) var errorMessage: String?
 
     public init(exam: Exam) {
         self.exam = exam
@@ -37,6 +47,25 @@ public final class PracticeSessionViewModel {
         selectedOptionId != nil && !isShowingFeedback
     }
 
+    public var state: SessionState {
+        if exam.questions.isEmpty {
+            return .empty
+        }
+        if errorMessage != nil {
+            return .error
+        }
+        if isFinished {
+            return .results
+        }
+        if isShowingFeedback {
+            return .feedback
+        }
+        if selectedOptionId != nil {
+            return .responseSelected
+        }
+        return .questionWithoutResponse
+    }
+
     public func selectOption(_ optionId: String) {
         guard !isShowingFeedback else { return }
 
@@ -56,6 +85,7 @@ public final class PracticeSessionViewModel {
         guard let feedback = MockExamProvider.feedback(
             for: currentQuestion.questionId
         ) else {
+            errorMessage = "No se pudo preparar la retroalimentación."
             return
         }
 
@@ -80,5 +110,11 @@ public final class PracticeSessionViewModel {
         } else {
             isFinished = true
         }
+    }
+
+    public func retryFeedback() {
+        guard errorMessage != nil else { return }
+        errorMessage = nil
+        submitAnswer()
     }
 }

@@ -37,12 +37,14 @@ public struct HomeView: View {
                         )
                     )
                 }
+                .accessibilityHidden(true)
 
                 Text(viewModel.title)
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
+                    .accessibilityAddTraits(.isHeader)
 
                 Text(viewModel.subtitle)
                     .font(.body)
@@ -56,7 +58,9 @@ public struct HomeView: View {
                 .font(.headline)
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
-                .frame(height: 56)
+                .frame(minHeight: 56)
+                .contentShape(Rectangle())
+                .accessibilityHint("Abre la configuración de la práctica")
                 .background(
                     LinearGradient(
                         colors: [.purple, .cyan],

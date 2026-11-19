@@ -69,7 +69,9 @@ public struct PracticeConfigurationView: View {
                     .font(.headline)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 56)
+                    .frame(minHeight: 56)
+                    .contentShape(Rectangle())
+                    .accessibilityHint("Prepara y muestra la primera pregunta")
                     .background(
                         LinearGradient(
                             colors: [.purple, .cyan],
@@ -129,6 +131,11 @@ public struct PracticeConfigurationView: View {
                 }
                 .padding()
                 .frame(maxWidth: .infinity)
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("\(title): \(label(selection.wrappedValue))")
+                .accessibilityHint("Abre las opciones disponibles")
                 .background(Color.purple.opacity(0.22))
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)

@@ -1,0 +1,4 @@
+"app.preparing_practice" = "Preparing your practice...";
+"app.preparation_error_title" = "We couldn't prepare the questions";
+"app.preparation_error_message" = "Return to configuration and try again.";
+"app.back_to_configuration" = "Back to configuration";

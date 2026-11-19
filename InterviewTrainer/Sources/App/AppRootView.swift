@@ -19,30 +19,37 @@ public struct AppRootView: View {
     public init() {}
 
     public var body: some View {
-        Group {
-            switch stage {
-            case .home:
-                HomeView {
-                    stage = .configuration
-                }
-            case .configuration:
-                PracticeConfigurationView { topic, difficulty, language in
-                    prepareExam(topic: topic, difficulty: difficulty, language: language)
-                }
-            case .loading:
-                loadingView
-            case .session:
-                if let exam {
-                    PracticeSessionView(exam: exam) {
-                        self.exam = nil
-                        stage = .home
+        ZStack {
+            Color(red: 0.035, green: 0.055, blue: 0.12)
+                .ignoresSafeArea()
+
+            Group {
+                switch stage {
+                case .home:
+                    HomeView {
+                        stage = .configuration
                     }
+                case .configuration:
+                    PracticeConfigurationView { topic, difficulty, language in
+                        prepareExam(topic: topic, difficulty: difficulty, language: language)
+                    }
+                case .loading:
+                    loadingView
+                case .session:
+                    if let exam {
+                        PracticeSessionView(exam: exam) {
+                            self.exam = nil
+                            stage = .home
+                        }
+                    }
+                case .error:
+                    errorView
                 }
-            case .error:
-                errorView
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .animation(.easeInOut, value: stage)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private func prepareExam(
@@ -77,7 +84,7 @@ public struct AppRootView: View {
             ProgressView()
                 .tint(.cyan)
                 .scaleEffect(1.4)
-            Text("Preparando tu práctica...")
+            Text(AppLocalization.preparingPractice)
                 .font(.headline)
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
@@ -97,32 +104,36 @@ public struct AppRootView: View {
                 .foregroundStyle(.yellow)
                 .accessibilityHidden(true)
 
-            Text("No pudimos preparar las preguntas")
+            Text(AppLocalization.preparationErrorTitle)
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
 
-            Text("Vuelve a la configuración e inténtalo nuevamente.")
+            Text(AppLocalization.preparationErrorMessage)
                 .font(.body)
                 .foregroundStyle(.white.opacity(0.72))
                 .multilineTextAlignment(.center)
 
-            Button("Volver a configuración") {
+            Button {
                 stage = .configuration
+            } label: {
+                Text(AppLocalization.backToConfiguration)
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 56)
+                    .contentShape(Rectangle())
+                    .background(
+                        LinearGradient(
+                            colors: [.purple, .cyan],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
             }
-            .font(.headline)
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .frame(minHeight: 56)
-            .background(
-                LinearGradient(
-                    colors: [.purple, .cyan],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .buttonStyle(.plain)
             Spacer()
         }
         .padding(24)

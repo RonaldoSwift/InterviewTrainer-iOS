@@ -4,9 +4,9 @@ import Observation
 @MainActor
 public final class HomeViewModel {
 
-    public var title = "InterviewTrainer AI"
+    public var title = HomeLocalization.title
 
-    public var subtitle = "Prepárate para tu próxima entrevista técnica de iOS."
+    public var subtitle = HomeLocalization.subtitle
 
     public var isShowingPractice = false
 

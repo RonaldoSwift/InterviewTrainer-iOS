@@ -22,75 +22,89 @@ public struct PracticeConfigurationView: View {
     }
 
     public var body: some View {
-        NavigationStack {
+        ZStack {
+            Color(red: 0.035, green: 0.055, blue: 0.12)
+                .ignoresSafeArea()
+
             VStack(spacing: 0) {
-                ScrollView {
-                    VStack(spacing: 16) {
-                        selectorCard(
-                            title: "Tema de práctica",
-                            icon: "square.stack.3d.up",
-                            selection: $viewModel.selectedTopic,
-                            options: ExamTopic.allCases,
-                            label: topicLabel
-                        )
+                practiceHeader(PracticeLocalization.configurationTitle)
 
-                        selectorCard(
-                            title: "Dificultad",
-                            icon: "chart.bar",
-                            selection: $viewModel.selectedDifficulty,
-                            options: ExamDifficulty.allCases,
-                            label: difficultyLabel
-                        )
+                VStack(spacing: 12) {
+                    selectorCard(
+                        title: PracticeLocalization.topic,
+                        icon: "square.stack.3d.up",
+                        selection: $viewModel.selectedTopic,
+                        options: ExamTopic.allCases,
+                        label: PracticeLocalization.topicLabel
+                    )
 
-                        selectorCard(
-                            title: "Idioma",
-                            icon: "globe",
-                            selection: $viewModel.selectedLanguage,
-                            options: ExamLanguage.allCases,
-                            label: languageLabel
-                        )
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 12)
-                    .padding(.bottom, 24)
+                    selectorCard(
+                        title: PracticeLocalization.difficulty,
+                        icon: "chart.bar",
+                        selection: $viewModel.selectedDifficulty,
+                        options: ExamDifficulty.allCases,
+                        label: PracticeLocalization.difficultyLabel
+                    )
+
+                    selectorCard(
+                        title: PracticeLocalization.language,
+                        icon: "globe",
+                        selection: $viewModel.selectedLanguage,
+                        options: ExamLanguage.allCases,
+                        label: PracticeLocalization.languageLabel
+                    )
                 }
-
+                .padding(.horizontal, 20)
+                .padding(.top, 16)
+                .padding(.bottom, 16)
+            }
+            .safeAreaPadding(.top)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
                 VStack(spacing: 0) {
                     Divider()
                         .overlay(.white.opacity(0.08))
 
-                    Button("Comenzar examen") {
+                    Button {
                         onStartPractice(
                             viewModel.selectedTopic,
                             viewModel.selectedDifficulty,
                             viewModel.selectedLanguage
                         )
+                    } label: {
+                        Text(PracticeLocalization.startExam)
+                            .font(.headline)
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 56)
+                            .contentShape(Rectangle())
+                            .background(
+                                LinearGradient(
+                                    colors: [.purple, .cyan],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
                     }
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(minHeight: 56)
-                    .contentShape(Rectangle())
-                    .accessibilityHint("Prepara y muestra la primera pregunta")
-                    .background(
-                        LinearGradient(
-                            colors: [.purple, .cyan],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .buttonStyle(.plain)
+                    .accessibilityHint(PracticeLocalization.startExamHint)
                     .padding(.horizontal, 20)
                     .padding(.top, 12)
-                    .padding(.bottom, 16)
+                    .padding(.bottom, 12)
                 }
                 .background(Color(red: 0.035, green: 0.055, blue: 0.12))
             }
-            .navigationTitle("Configurar práctica")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarColorScheme(.dark, for: .navigationBar)
-            .background(Color(red: 0.035, green: 0.055, blue: 0.12))
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private func practiceHeader(_ title: String) -> some View {
+        Text(title)
+            .font(.headline)
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .frame(height: 44)
+            .padding(.top, 8)
     }
 
     private func selectorCard<T: Hashable & RawRepresentable>(
@@ -100,9 +114,9 @@ public struct PracticeConfigurationView: View {
         options: [T],
         label: @escaping (T) -> String
     ) -> some View where T.RawValue == String {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 8) {
             Label(title, systemImage: icon)
-                .font(.headline)
+                .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.white)
 
             Menu {
@@ -129,13 +143,20 @@ public struct PracticeConfigurationView: View {
                         .foregroundStyle(.cyan)
                         .font(.caption.weight(.bold))
                 }
-                .padding()
+                .padding(.vertical, 10)
+                .padding(.horizontal, 12)
                 .frame(maxWidth: .infinity)
-                .frame(minHeight: 44)
+                .frame(minHeight: 40)
                 .contentShape(Rectangle())
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("\(title): \(label(selection.wrappedValue))")
-                .accessibilityHint("Abre las opciones disponibles")
+                .accessibilityLabel(
+                    PracticeLocalization.formatted(
+                        "practice.selector_accessibility",
+                        title,
+                        label(selection.wrappedValue)
+                    )
+                )
+                .accessibilityHint(PracticeLocalization.selectorHint)
                 .background(Color.purple.opacity(0.22))
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
@@ -144,32 +165,9 @@ public struct PracticeConfigurationView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             }
         }
-        .padding(16)
+        .padding(12)
         .background(Color.white.opacity(0.04))
         .clipShape(RoundedRectangle(cornerRadius: 18))
     }
 
-    private func topicLabel(_ topic: ExamTopic) -> String {
-        switch topic {
-        case .swift: "Swift"
-        case .swiftUI: "SwiftUI"
-        case .uiKit: "UIKit"
-        case .concurrency: "Concurrency"
-        case .memoryManagement: "Memory Management"
-        case .combine: "Combine"
-        case .architecture: "Arquitectura"
-        }
-    }
-
-    private func difficultyLabel(_ difficulty: ExamDifficulty) -> String {
-        switch difficulty {
-        case .beginner: "Principiante"
-        case .intermediate: "Intermedio"
-        case .advanced: "Avanzado"
-        }
-    }
-
-    private func languageLabel(_ language: ExamLanguage) -> String {
-        language == .spanish ? "Español" : "English"
-    }
 }

@@ -85,7 +85,7 @@ public final class PracticeSessionViewModel {
         guard let feedback = MockExamProvider.feedback(
             for: currentQuestion.questionId
         ) else {
-            errorMessage = "No se pudo preparar la retroalimentación."
+            errorMessage = PracticeLocalization.feedbackError
             return
         }
 

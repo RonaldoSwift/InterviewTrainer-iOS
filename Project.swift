@@ -11,7 +11,10 @@ let project = Project(
             product: .app,
             bundleId: "com.example.interviewtrainer",
             deploymentTargets: .iOS("17.0"),
-            infoPlist: .default,
+            infoPlist: .extendingDefault(with: [
+                "CFBundleDevelopmentRegion": "es",
+                "CFBundleLocalizations": ["es", "en"]
+            ]),
             sources: ["InterviewTrainer/Sources/App/**"],
             resources: ["InterviewTrainer/Resources/**"],
             dependencies: [
@@ -28,6 +31,7 @@ let project = Project(
             bundleId: "com.example.interviewtrainer.home",
             deploymentTargets: .iOS("17.0"),
             sources: ["InterviewTrainer/Sources/Features/Home/**"],
+            resources: ["InterviewTrainer/Sources/Features/Home/Resources/**"],
             dependencies: []
         ),
 
@@ -53,6 +57,7 @@ let project = Project(
             bundleId: "com.example.interviewtrainer.practice",
             deploymentTargets: .iOS("17.0"),
             sources: ["InterviewTrainer/Sources/Features/Practice/**"],
+            resources: ["InterviewTrainer/Sources/Features/Practice/Resources/**"],
             dependencies: []
         ),
 

@@ -14,38 +14,65 @@ public struct PracticeSessionView: View {
     }
 
     public var body: some View {
-        NavigationStack {
-            Group {
-                if viewModel.state == .empty {
-                    emptyView
-                } else if viewModel.state == .error,
-                          let errorMessage = viewModel.errorMessage {
-                    sessionErrorView(errorMessage)
-                } else if viewModel.isFinished {
-                    resultView
-                } else {
-                    questionView
+        ZStack {
+            Color(red: 0.035, green: 0.055, blue: 0.12)
+                .ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                practiceHeader(PracticeLocalization.sessionTitle)
+
+                Group {
+                    if viewModel.state == .empty {
+                        emptyView
+                    } else if viewModel.state == .error,
+                              let errorMessage = viewModel.errorMessage {
+                        sessionErrorView(errorMessage)
+                    } else if viewModel.isFinished {
+                        resultView
+                    } else {
+                        questionView
+                    }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.clear)
             }
-            .navigationTitle("Práctica")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarColorScheme(.dark, for: .navigationBar)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(red: 0.035, green: 0.055, blue: 0.12))
+            .safeAreaPadding(.top)
+            .safeAreaPadding(.bottom)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private func practiceHeader(_ title: String) -> some View {
+        Text(title)
+            .font(.headline)
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .frame(height: 44)
+            .padding(.top, 8)
     }
 
     private var questionView: some View {
         VStack(alignment: .leading, spacing: 16) {
             ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 6) {
                         HStack {
-                            Text("Pregunta \(viewModel.questionNumber) de \(viewModel.totalQuestions)")
+                            Text(
+                                PracticeLocalization.formatted(
+                                    "practice.question_progress",
+                                    viewModel.questionNumber,
+                                    viewModel.totalQuestions
+                                )
+                            )
                                 .font(.subheadline.weight(.semibold))
                                 .foregroundStyle(.white)
                             Spacer()
-                            Text("\(Int((Double(viewModel.questionNumber) / Double(viewModel.totalQuestions)) * 100))%")
+                            Text(
+                                PracticeLocalization.formatted(
+                                    "practice.percentage",
+                                    Int((Double(viewModel.questionNumber) / Double(viewModel.totalQuestions)) * 100)
+                                )
+                            )
                                 .font(.caption.weight(.bold))
                                 .foregroundStyle(.cyan)
                         }
@@ -56,10 +83,14 @@ public struct PracticeSessionView: View {
                         )
                         .tint(.cyan)
                         .accessibilityLabel(
-                            "Progreso: pregunta \(viewModel.questionNumber) de \(viewModel.totalQuestions)"
+                            PracticeLocalization.formatted(
+                                "practice.progress_accessibility",
+                                viewModel.questionNumber,
+                                viewModel.totalQuestions
+                            )
                         )
                     }
-                    .padding(16)
+                    .padding(12)
                     .background(Color.white.opacity(0.06))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
 
@@ -67,10 +98,10 @@ public struct PracticeSessionView: View {
                         .font(.title3)
                         .fontWeight(.bold)
                         .foregroundStyle(.white)
-                        .padding(.top, 4)
+                        .padding(.top, 2)
                         .accessibilityAddTraits(.isHeader)
 
-                    VStack(spacing: 12) {
+                    VStack(spacing: 8) {
                         ForEach(viewModel.currentQuestion.options, id: \.optionId) { option in
                             Button {
                                 viewModel.selectOption(option.optionId)
@@ -85,6 +116,8 @@ public struct PracticeSessionView: View {
 
                                     Text(option.text)
                                         .foregroundStyle(.white)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                        .lineLimit(nil)
 
                                     Spacer()
 
@@ -101,7 +134,8 @@ public struct PracticeSessionView: View {
                                             .foregroundStyle(.cyan)
                                     }
                                 }
-                                .padding()
+                                .padding(.horizontal)
+                                .padding(.vertical, 8)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .background(optionBackground(for: option.optionId))
                                 .overlay(
@@ -112,7 +146,7 @@ public struct PracticeSessionView: View {
                             }
                             .buttonStyle(.plain)
                             .disabled(viewModel.isShowingFeedback)
-                            .frame(minHeight: 56)
+                            .frame(minHeight: 46)
                             .contentShape(Rectangle())
                             .accessibilityLabel(alternativeAccessibilityLabel(for: option.optionId, text: option.text))
                         }
@@ -124,8 +158,8 @@ public struct PracticeSessionView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text(
                                 viewModel.selectedOptionId == feedback.correctOptionId
-                                ? "¡Respuesta correcta!"
-                                : "Respuesta incorrecta"
+                                ? PracticeLocalization.correctFeedback
+                                : PracticeLocalization.incorrectFeedback
                             )
                             .font(.headline)
                             .foregroundStyle(
@@ -137,6 +171,8 @@ public struct PracticeSessionView: View {
                             Text(feedback.explanation)
                                 .font(.body)
                                 .foregroundStyle(.white.opacity(0.82))
+                                .fixedSize(horizontal: false, vertical: true)
+                                .lineLimit(nil)
                         }
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -148,69 +184,76 @@ public struct PracticeSessionView: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
             }
-
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             VStack(spacing: 0) {
                 Divider()
                     .overlay(.white.opacity(0.08))
 
                 if viewModel.isShowingFeedback {
-                    Button(
-                        viewModel.questionNumber == viewModel.totalQuestions
-                        ? "Ver resultados"
-                        : "Siguiente pregunta"
-                    ) {
+                    Button {
                         viewModel.nextQuestion()
-                    }
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 56)
-                    .background(
-                        LinearGradient(
-                            colors: [.purple, .cyan],
-                            startPoint: .leading,
-                            endPoint: .trailing
+                    } label: {
+                        Text(
+                            viewModel.questionNumber == viewModel.totalQuestions
+                            ? PracticeLocalization.viewResults
+                            : PracticeLocalization.nextQuestion
                         )
-                    )
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                    .frame(minHeight: 56)
-                    .contentShape(Rectangle())
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 56)
+                        .contentShape(Rectangle())
+                        .background(
+                            LinearGradient(
+                                colors: [.purple, .cyan],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                    }
+                    .buttonStyle(.plain)
                     .padding(.horizontal, 20)
                     .padding(.top, 12)
-                    .padding(.bottom, 16)
-                    .accessibilityHint("Muestra la siguiente pregunta")
+                    .padding(.bottom, 12)
+                    .accessibilityHint(PracticeLocalization.nextQuestionHint)
                 } else {
-                    Button("Responder") {
+                    Button {
                         viewModel.submitAnswer()
+                    } label: {
+                        Text(PracticeLocalization.answer)
+                            .font(.headline)
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 56)
+                            .contentShape(Rectangle())
+                            .background(
+                                viewModel.canSubmitAnswer
+                                ? LinearGradient(
+                                    colors: [.purple, .cyan],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                                : LinearGradient(
+                                    colors: [.white.opacity(0.10), .white.opacity(0.10)],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
                     }
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 56)
-                    .background(
-                        viewModel.canSubmitAnswer
-                        ? LinearGradient(
-                            colors: [.purple, .cyan],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                        : LinearGradient(
-                            colors: [.white.opacity(0.10), .white.opacity(0.10)],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .buttonStyle(.plain)
                     .disabled(!viewModel.canSubmitAnswer)
-                    .frame(minHeight: 56)
-                    .contentShape(Rectangle())
                     .padding(.horizontal, 20)
                     .padding(.top, 12)
-                    .padding(.bottom, 16)
+                    .padding(.bottom, 12)
                     .accessibilityHint(
                         viewModel.canSubmitAnswer
-                        ? "Valida la alternativa seleccionada"
-                        : "Selecciona una alternativa antes de responder"
+                        ? PracticeLocalization.answerHint
+                        : PracticeLocalization.selectAnswerHint
                     )
                 }
             }
@@ -224,31 +267,42 @@ public struct PracticeSessionView: View {
                 .font(.system(size: 64))
                 .foregroundStyle(.yellow)
                 .padding(.top, 28)
-                .accessibilityLabel("Práctica completada")
+                .accessibilityLabel(PracticeLocalization.completedAccessibility)
 
-            Text("¡Práctica completada!")
+            Text(PracticeLocalization.completedTitle)
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundStyle(.white)
 
-            Text("\(scorePercentage)%")
+            Text(
+                PracticeLocalization.formatted(
+                    "practice.percentage",
+                    scorePercentage
+                )
+            )
                 .font(.system(size: 36, weight: .bold))
                 .foregroundStyle(.cyan)
 
-            Text("\(viewModel.correctAnswers) de \(viewModel.totalQuestions) respuestas correctas")
+            Text(
+                PracticeLocalization.formatted(
+                    "practice.correct_answers",
+                    viewModel.correctAnswers,
+                    viewModel.totalQuestions
+                )
+            )
                 .foregroundStyle(.white.opacity(0.72))
 
             HStack(spacing: 12) {
                 resultCard(
                     count: viewModel.correctAnswers,
-                    title: "Correctas",
+                    title: PracticeLocalization.correct,
                     color: .green,
                     icon: "checkmark.circle.fill"
                 )
 
                 resultCard(
                     count: viewModel.incorrectAnswers,
-                    title: "Incorrectas",
+                    title: PracticeLocalization.incorrect,
                     color: .red,
                     icon: "xmark.circle.fill"
                 )
@@ -256,23 +310,25 @@ public struct PracticeSessionView: View {
 
             Spacer()
 
-            Button("Volver al inicio") {
+            Button {
                 onFinish()
+            } label: {
+                Text(PracticeLocalization.backHome)
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 56)
+                    .contentShape(Rectangle())
+                    .background(
+                        LinearGradient(
+                            colors: [.purple, .cyan],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
             }
-            .font(.headline)
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 56)
-            .background(
-                LinearGradient(
-                    colors: [.purple, .cyan],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .frame(minHeight: 56)
-            .contentShape(Rectangle())
+            .buttonStyle(.plain)
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 20)
@@ -287,18 +343,19 @@ public struct PracticeSessionView: View {
                 .foregroundStyle(.cyan)
                 .accessibilityHidden(true)
 
-            Text("No hay preguntas disponibles")
+            Text(PracticeLocalization.noQuestions)
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
 
-            Text("Regresa y genera otra práctica.")
+            Text(PracticeLocalization.noQuestionsMessage)
                 .foregroundStyle(.white.opacity(0.72))
                 .multilineTextAlignment(.center)
             Spacer()
         }
         .padding(24)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private func sessionErrorView(_ message: String) -> some View {
@@ -315,25 +372,29 @@ public struct PracticeSessionView: View {
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
 
-            Button("Intentar esta pregunta nuevamente") {
+            Button {
                 viewModel.retryFeedback()
+            } label: {
+                Text(PracticeLocalization.retryFeedback)
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 56)
+                    .contentShape(Rectangle())
+                    .background(
+                        LinearGradient(
+                            colors: [.purple, .cyan],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
             }
-            .font(.headline)
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .frame(minHeight: 56)
-            .contentShape(Rectangle())
-            .background(
-                LinearGradient(
-                    colors: [.purple, .cyan],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .buttonStyle(.plain)
             Spacer()
         }
         .padding(24)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private func optionBackground(for optionId: String) -> Color {
@@ -421,15 +482,17 @@ public struct PracticeSessionView: View {
 
         if viewModel.isShowingFeedback {
             if optionId == viewModel.currentFeedback?.correctOptionId {
-                status = "Alternativa correcta"
+                status = PracticeLocalization.correctOption
             } else if optionId == viewModel.selectedOptionId {
-                status = "Tu alternativa incorrecta"
+                status = PracticeLocalization.incorrectSelectedOption
             }
         } else if optionId == viewModel.selectedOptionId {
-            status = "Alternativa seleccionada"
+            status = PracticeLocalization.selectedOption
         }
 
-        let prefix = status.isEmpty ? "Alternativa \(optionId)" : "Alternativa \(optionId), \(status)"
+        let prefix = status.isEmpty
+            ? PracticeLocalization.formatted("practice.option", optionId)
+            : PracticeLocalization.formatted("practice.option_with_status", optionId, status)
         return "\(prefix). \(text)"
     }
 }

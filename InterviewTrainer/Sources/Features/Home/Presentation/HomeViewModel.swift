@@ -4,9 +4,9 @@ import Observation
 @MainActor
 public final class HomeViewModel {
 
-    public var title = HomeLocalization.title
+    public var title = HomeStrings.Home.title
 
-    public var subtitle = HomeLocalization.subtitle
+    public var subtitle = HomeStrings.Home.subtitle
 
     public var isShowingPractice = false
 

@@ -8,8 +8,8 @@ final class HomeViewModelTests: XCTestCase {
     func testInitialState() {
         let viewModel = HomeViewModel()
 
-        XCTAssertEqual(viewModel.title, HomeLocalization.title)
-        XCTAssertEqual(viewModel.subtitle, HomeLocalization.subtitle)
+        XCTAssertEqual(viewModel.title, HomeStrings.Home.title)
+        XCTAssertEqual(viewModel.subtitle, HomeStrings.Home.subtitle)
         XCTAssertFalse(viewModel.isShowingPractice)
     }
 

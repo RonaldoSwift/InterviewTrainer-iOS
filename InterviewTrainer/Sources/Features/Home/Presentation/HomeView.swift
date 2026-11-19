@@ -63,7 +63,7 @@ public struct HomeView: View {
                     Button {
                         onStartPractice()
                     } label: {
-                        Text(HomeLocalization.startPractice)
+                        Text(HomeStrings.Home.startPractice)
                             .font(.headline)
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
@@ -79,7 +79,7 @@ public struct HomeView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 16))
                     }
                     .buttonStyle(.plain)
-                    .accessibilityHint(HomeLocalization.startPracticeHint)
+                    .accessibilityHint(HomeStrings.Home.startPracticeHint)
 
                     Spacer()
                 }

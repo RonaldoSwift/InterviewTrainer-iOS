@@ -3,179 +3,182 @@ import XCTest
 @testable import Practice
 
 final class PracticeDTOTests: XCTestCase {
-    func testGenerateExamRequestEncodesBackendKeys() throws {
-        let request = GenerateExamRequestDTO(
-            topic: "Python",
-            difficulty: "intermediate",
-            language: "es"
+    func testCreateExamRequestEncodesUUIDAndBackendKeys() throws {
+        let request = CreateExamRequestDTO(
+            examID: Self.examID,
+            topic: "Swift",
+            difficulty: "basic",
+            language: "en"
         )
 
         let object = try jsonObject(from: JSONEncoder().encode(request))
 
-        XCTAssertEqual(Set(object.keys), Set(["topic", "difficulty", "language"]))
-        XCTAssertEqual(object["topic"] as? String, "Python")
-        XCTAssertEqual(object["difficulty"] as? String, "intermediate")
-        XCTAssertEqual(object["language"] as? String, "es")
+        XCTAssertEqual(
+            Set(object.keys),
+            Set(["exam_id", "topic", "difficulty", "language"])
+        )
+        XCTAssertEqual(object["exam_id"], Self.examID.uuidString)
+        XCTAssertEqual(object["topic"], "Swift")
+        XCTAssertEqual(object["difficulty"], "basic")
+        XCTAssertEqual(object["language"], "en")
     }
 
-    func testGenerateExamResponseDecodesBackendPayload() throws {
-        let data = Data(
-            """
-            {
-              "exam_id": "exam-123",
-              "topic": "Python",
-              "difficulty": "intermediate",
-              "language": "es",
-              "questions": [
-                {
-                  "id": "q1",
-                  "statement": "¿Qué es una lista en Python?",
-                  "options": [
-                    {
-                      "id": "a",
-                      "text": "Una colección ordenada y modificable"
-                    },
-                    {
-                      "id": "b",
-                      "text": "Un tipo de función"
-                    }
-                  ]
-                }
-              ]
-            }
-            """.utf8
+    func testExamCreateResponseDecodesBackendQuestionsAndOptions() throws {
+        let response = try JSONDecoder().decode(
+            ExamCreateResponseDTO.self,
+            from: Data(Self.examCreateJSON.utf8)
         )
 
-        let response = try JSONDecoder().decode(GenerateExamResponseDTO.self, from: data)
-
-        XCTAssertEqual(response.examID, "exam-123")
-        XCTAssertEqual(response.topic, "Python")
+        XCTAssertEqual(response.examID, Self.examID)
+        XCTAssertEqual(response.topic, "Swift")
         XCTAssertEqual(response.difficulty, "intermediate")
         XCTAssertEqual(response.language, "es")
-        XCTAssertEqual(response.questions.count, 1)
-        XCTAssertEqual(response.questions[0].id, "q1")
-        XCTAssertEqual(response.questions[0].statement, "¿Qué es una lista en Python?")
-        XCTAssertEqual(response.questions[0].options.count, 2)
-        XCTAssertEqual(response.questions[0].options[0].id, "a")
-        XCTAssertEqual(
-            response.questions[0].options[0].text,
-            "Una colección ordenada y modificable"
-        )
+        XCTAssertEqual(response.questions.count, 5)
+        XCTAssertEqual(response.questions[0].questionID, "q1")
+        XCTAssertEqual(response.questions[0].text, "Question 1")
+        XCTAssertEqual(response.questions[0].options.count, 4)
+        XCTAssertEqual(response.questions[0].options[0].optionID, "a")
+        XCTAssertEqual(response.questions[0].options[0].text, "Option a")
     }
 
-    func testGenerateExamResponseEncodesSnakeCaseExamID() throws {
-        let response = GenerateExamResponseDTO(
-            examID: "exam-123",
-            topic: "Python",
-            difficulty: "intermediate",
-            language: "es",
-            questions: [
-                QuestionResponseDTO(
-                    id: "q1",
-                    statement: "Question",
-                    options: [AnswerOptionResponseDTO(id: "a", text: "Option")]
-                ),
-            ]
-        )
-
-        let object = try jsonObject(from: JSONEncoder().encode(response))
-
-        XCTAssertEqual(object["exam_id"] as? String, "exam-123")
-        XCTAssertNil(object["examID"])
-    }
-
-    func testSubmitExamRequestEncodesBackendKeys() throws {
-        let request = SubmitExamRequestDTO(
-            answers: [
-                SubmittedAnswerDTO(questionID: "q1", selectedOptionID: "a"),
-            ]
-        )
+    func testAnswerRequestEncodesOneAnswerWithBackendKeys() throws {
+        let request = AnswerRequestDTO(questionID: "q1", optionID: "b")
 
         let object = try jsonObject(from: JSONEncoder().encode(request))
-        let answers = try XCTUnwrap(object["answers"] as? [[String: String]])
 
-        XCTAssertEqual(Set(object.keys), Set(["answers"]))
-        XCTAssertEqual(
-            answers,
-            [["question_id": "q1", "selected_option_id": "a"]]
-        )
+        XCTAssertEqual(object, ["question_id": "q1", "option_id": "b"])
     }
 
-    func testExamResultResponseDecodesBackendPayload() throws {
-        let data = Data(
-            """
-            {
-              "exam_id": "exam-123",
-              "score": 80.0,
-              "total_questions": 5,
-              "correct_answers": 4,
-              "incorrect_answers": 1,
-              "results": [
-                {
-                  "question_id": "q1",
-                  "selected_option_id": "a",
-                  "correct_option_id": "a",
-                  "is_correct": true,
-                  "explanation": "Una lista almacena elementos en orden y permite modificarlos."
-                }
-              ]
-            }
-            """.utf8
+    func testSubmitAnswerResponseDecodesCorrectionAndProgress() throws {
+        let response = try JSONDecoder().decode(
+            SubmitAnswerResponseDTO.self,
+            from: Data(Self.submitAnswerJSON.utf8)
         )
 
-        let response = try JSONDecoder().decode(ExamResultResponseDTO.self, from: data)
-
-        XCTAssertEqual(response.examID, "exam-123")
-        XCTAssertEqual(response.score, 80.0)
+        XCTAssertEqual(response.questionID, "q1")
+        XCTAssertEqual(response.optionID, "b")
+        XCTAssertFalse(response.isCorrect)
+        XCTAssertEqual(response.correctOptionID, "a")
+        XCTAssertEqual(response.explanation, "Option a is correct.")
+        XCTAssertEqual(response.status, .inProgress)
+        XCTAssertEqual(response.answeredQuestions, 1)
         XCTAssertEqual(response.totalQuestions, 5)
-        XCTAssertEqual(response.correctAnswers, 4)
-        XCTAssertEqual(response.incorrectAnswers, 1)
-        XCTAssertEqual(response.results.count, 1)
-        XCTAssertEqual(response.results[0].questionID, "q1")
-        XCTAssertEqual(response.results[0].selectedOptionID, "a")
-        XCTAssertEqual(response.results[0].correctOptionID, "a")
-        XCTAssertTrue(response.results[0].isCorrect)
-        XCTAssertEqual(
-            response.results[0].explanation,
-            "Una lista almacena elementos en orden y permite modificarlos."
-        )
+        XCTAssertEqual(response.progressPercentage, 20)
     }
 
-    func testExamResultResponseEncodesSnakeCaseKeys() throws {
-        let response = ExamResultResponseDTO(
-            examID: "exam-123",
-            score: 100,
-            totalQuestions: 1,
-            correctAnswers: 1,
-            incorrectAnswers: 0,
-            results: [
-                QuestionResultResponseDTO(
-                    questionID: "q1",
-                    selectedOptionID: "a",
-                    correctOptionID: "a",
-                    isCorrect: true,
-                    explanation: "Correct."
-                ),
-            ]
+    func testExamReadResponseDecodesStatusQuestionsAndRecordedAnswers() throws {
+        let response = try JSONDecoder().decode(
+            ExamReadResponseDTO.self,
+            from: Data(Self.examReadJSON.utf8)
         )
 
-        let object = try jsonObject(from: JSONEncoder().encode(response))
-        let results = try XCTUnwrap(object["results"] as? [[String: Any]])
-        let result = try XCTUnwrap(results.first)
-
-        XCTAssertEqual(object["exam_id"] as? String, "exam-123")
-        XCTAssertEqual(object["total_questions"] as? Int, 1)
-        XCTAssertEqual(object["correct_answers"] as? Int, 1)
-        XCTAssertEqual(object["incorrect_answers"] as? Int, 0)
-        XCTAssertEqual(result["question_id"] as? String, "q1")
-        XCTAssertEqual(result["selected_option_id"] as? String, "a")
-        XCTAssertEqual(result["correct_option_id"] as? String, "a")
-        XCTAssertEqual(result["is_correct"] as? Bool, true)
-        XCTAssertNil(object["examID"])
-        XCTAssertNil(result["questionID"])
+        XCTAssertEqual(response.examID, Self.examID)
+        XCTAssertEqual(response.status, .inProgress)
+        XCTAssertEqual(response.questions.count, 5)
+        XCTAssertEqual(response.questions[0].questionID, "q1")
+        XCTAssertEqual(response.answers.count, 1)
+        XCTAssertEqual(response.answers[0].questionID, "q1")
+        XCTAssertEqual(response.answers[0].optionID, "a")
+        XCTAssertTrue(response.answers[0].isCorrect)
     }
 
-    private func jsonObject(from data: Data) throws -> [String: Any] {
-        try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+    func testExamSummaryResponseDecodesBackendFields() throws {
+        let response = try JSONDecoder().decode(
+            ExamSummaryResponseDTO.self,
+            from: Data(Self.examSummaryJSON.utf8)
+        )
+
+        XCTAssertEqual(response.examID, Self.examID)
+        XCTAssertEqual(response.status, .completed)
+        XCTAssertEqual(response.totalQuestions, 5)
+        XCTAssertEqual(response.answeredQuestions, 5)
+        XCTAssertEqual(response.correctAnswers, 3)
+        XCTAssertEqual(response.percentage, 60)
     }
+
+    private func jsonObject(from data: Data) throws -> [String: String] {
+        try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: String])
+    }
+
+    private static let examID = UUID(uuidString: "d290f1ee-6c54-4b01-90e6-d701748f0851")!
+
+    private static let questionsJSON = """
+    [
+      {"question_id":"q1","text":"Question 1","options":[
+        {"option_id":"a","text":"Option a"},{"option_id":"b","text":"Option b"},
+        {"option_id":"c","text":"Option c"},{"option_id":"d","text":"Option d"}
+      ]},
+      {"question_id":"q2","text":"Question 2","options":[
+        {"option_id":"a","text":"Option a"},{"option_id":"b","text":"Option b"},
+        {"option_id":"c","text":"Option c"},{"option_id":"d","text":"Option d"}
+      ]},
+      {"question_id":"q3","text":"Question 3","options":[
+        {"option_id":"a","text":"Option a"},{"option_id":"b","text":"Option b"},
+        {"option_id":"c","text":"Option c"},{"option_id":"d","text":"Option d"}
+      ]},
+      {"question_id":"q4","text":"Question 4","options":[
+        {"option_id":"a","text":"Option a"},{"option_id":"b","text":"Option b"},
+        {"option_id":"c","text":"Option c"},{"option_id":"d","text":"Option d"}
+      ]},
+      {"question_id":"q5","text":"Question 5","options":[
+        {"option_id":"a","text":"Option a"},{"option_id":"b","text":"Option b"},
+        {"option_id":"c","text":"Option c"},{"option_id":"d","text":"Option d"}
+      ]}
+    ]
+    """
+
+    private static let examCreateJSON = """
+    {
+      "exam_id":"d290f1ee-6c54-4b01-90e6-d701748f0851",
+      "topic":"Swift",
+      "difficulty":"intermediate",
+      "language":"es",
+      "questions":\(questionsJSON)
+    }
+    """
+
+    private static let submitAnswerJSON = """
+    {
+      "question_id":"q1",
+      "option_id":"b",
+      "is_correct":false,
+      "correct_option_id":"a",
+      "explanation":"Option a is correct.",
+      "status":"in_progress",
+      "answered_questions":1,
+      "total_questions":5,
+      "progress_percentage":20
+    }
+    """
+
+    private static let examReadJSON = """
+    {
+      "exam_id":"d290f1ee-6c54-4b01-90e6-d701748f0851",
+      "topic":"Swift",
+      "difficulty":"intermediate",
+      "language":"es",
+      "status":"in_progress",
+      "questions":\(questionsJSON),
+      "answers":[
+        {
+          "question_id":"q1",
+          "option_id":"a",
+          "is_correct":true,
+          "correct_option_id":"a",
+          "explanation":"Option a is correct."
+        }
+      ]
+    }
+    """
+
+    private static let examSummaryJSON = """
+    {
+      "exam_id":"d290f1ee-6c54-4b01-90e6-d701748f0851",
+      "status":"completed",
+      "total_questions":5,
+      "answered_questions":5,
+      "correct_answers":3,
+      "percentage":60
+    }
+    """
 }

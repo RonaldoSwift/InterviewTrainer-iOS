@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		00FE178E5BCFDEC3AE708F7D /* AnswerOptionResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBE576F5523ED27D5009752 /* AnswerOptionResponseDTO.swift */; };
-		02C7BA5787F744A4BE0C6205 /* SubmitExamRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A28195DDFEB1E928AC0117 /* SubmitExamRequestDTO.swift */; };
 		094B7706499F98137A935116 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324D897893CDF0AC3A843725 /* MockURLProtocol.swift */; };
 		130912AD46C56F7F512E4264 /* APIConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A08E43A7B8D9E8F6B38945 /* APIConfiguration.swift */; };
+		1A89C0802DFE26291103C740 /* ExamStatusDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF3602607DC645932D7B95F /* ExamStatusDTO.swift */; };
 		1A8E9620B0A1347BEA185DC2 /* PracticeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C09CA247FE4BCC25B08FBB /* PracticeViewModelTests.swift */; };
 		1D89FB1230BDF46652925BDE /* QuestionResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9128C340B712F41471774DF /* QuestionResponseDTO.swift */; };
 		22826A081B170F82363F214A /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BFFE1634B81BDCDC16DC90 /* HomeView.swift */; };
@@ -19,18 +19,18 @@
 		31246F79638E397606540E6B /* PracticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A779836F73BB46365FFF75 /* PracticeView.swift */; };
 		324A97CB57D19C66F421C28A /* AppRootViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99DB7009B28B4636D3E4EEE /* AppRootViewTests.swift */; };
 		33C849A41AD51C4303AB3DE2 /* Home.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1DD1B5859C7F2FB91E0713CD /* Home.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3B84A0E4DE033F5BF540B1CA /* SubmitAnswerResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97098059DA839EAE88AB19DF /* SubmitAnswerResponseDTO.swift */; };
 		3CF4DDA02C08E4E406D1D739 /* PracticeDomainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046BBC4D890804EA1745C8C9 /* PracticeDomainTests.swift */; };
-		3CF712A3FE7E3F556CCA5204 /* ExamResultResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FFE77ADFC38E6B8814D82B /* ExamResultResponseDTO.swift */; };
 		3D5EFCF46AE78CE110E51FEC /* ExamResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D76A6F3F3D3D575D3AE5BB3 /* ExamResult.swift */; };
 		3F135281CD722A09A0C25EA2 /* ExamAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F3C0B8AC8A0565CAC8E5F7 /* ExamAPIService.swift */; };
-		4C957E080B9A8B530666170C /* GenerateExamResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0D2EFE85B1B46B4DAA0E29 /* GenerateExamResponseDTO.swift */; };
-		5667C70E1DF8E04026DA3990 /* QuestionResultResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB774BD1F122CCDBCF55093F /* QuestionResultResponseDTO.swift */; };
 		5D57D7120B01ACAC779FC68F /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A6CA8B5B3A238A1899C3C0 /* ConfigurationView.swift */; };
 		65194E189A42A7FFBD214574 /* InterviewTrainerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8703DAC11335973F973780AD /* InterviewTrainerApp.swift */; };
 		66591CA7AD2F1D80D8670792 /* ExamAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A3AAF0EE46A0036FE3234B /* ExamAnswer.swift */; };
-		6DEB52DEC1EB844CCC4DB886 /* GenerateExamRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E278B3FB352393CFCEABC /* GenerateExamRequestDTO.swift */; };
+		6BF7E1A9A25E9142117C71BE /* ExamReadResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469D667F16E863C9EF21D573 /* ExamReadResponseDTO.swift */; };
 		702BAFCF9312C6658F31D8CE /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2578D09CF486C7221937772 /* Question.swift */; };
+		7053FBA3BF3EC1A3F74327E1 /* AnswerResultDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F124BD095B6AAD720D66F061 /* AnswerResultDTO.swift */; };
 		75E99AF64B7FD16B54FD825F /* PracticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC594AE94AF21B2FBE51ABE /* PracticeViewModel.swift */; };
+		780AC6A0BB3A03853F123BF2 /* CreateExamRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0E9AAC16E3453B3021D266 /* CreateExamRequestDTO.swift */; };
 		8A53B3A10203461A5C967ED5 /* AnswerOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292DAF5AB052497CB07766B3 /* AnswerOption.swift */; };
 		98E3AEDDE28B66CAECB89121 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA72E307100839E02638AD99 /* ResultsView.swift */; };
 		9CE318AD5D1007F6954D88C3 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08292BCA663C4EAF25CE8034 /* HomeViewModel.swift */; };
@@ -38,11 +38,14 @@
 		A5DAE035EBD477191742BBD1 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96CD5A3A25A3EFDC8788D90 /* HomeViewModelTests.swift */; };
 		AB946674D285EAA9F9632BC6 /* PracticeDTOTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7217B44B8CF8638296FB04C1 /* PracticeDTOTests.swift */; };
 		AC94BA01C4013050BB71B412 /* Practice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D821E9F24E7BB1E9006ED /* Practice.framework */; };
-		AE2135A94D5CAC58E7797226 /* SubmittedAnswerDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9879A0B7AC06B744813AAA /* SubmittedAnswerDTO.swift */; };
 		B46D9DBD798A04512A3D29AA /* QuestionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29719078A1602B9F9DD13265 /* QuestionResult.swift */; };
 		B4FC33D63A7A3FF5C9F8CDE6 /* Exam.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D4BDBF0C971115D7C0B38F /* Exam.swift */; };
+		BE56F7F65DA9D720F2F0C75F /* ExamCreateResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7399747D3EE1A0509EE0B54 /* ExamCreateResponseDTO.swift */; };
 		C7C85660078CBA33849AB20C /* ExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECB59032E4178B0B32276F5 /* ExamView.swift */; };
 		CDE7B6301B027E7B11123403 /* Home.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DD1B5859C7F2FB91E0713CD /* Home.framework */; };
+		CF0897CCFCA5F083BBC219F2 /* ExamSummaryResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20993F1F7E0D024792BF5FE /* ExamSummaryResponseDTO.swift */; };
+		D0F7ACF70CAE65964F469406 /* HealthResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9081BB0A83C4DA7D29832D /* HealthResponseDTO.swift */; };
+		D34E1A5640A6F1418BC50C2D /* AnswerRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B46B571828F06287CC5F408 /* AnswerRequestDTO.swift */; };
 		DE1E61215F85814474BB947E /* Practice.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 843D821E9F24E7BB1E9006ED /* Practice.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E8F9D98C8F01F6270FB28190 /* Practice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843D821E9F24E7BB1E9006ED /* Practice.framework */; };
 		EEE220D20C07F510944A8928 /* Home.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DD1B5859C7F2FB91E0713CD /* Home.framework */; };
@@ -162,38 +165,41 @@
 		24A3AAF0EE46A0036FE3234B /* ExamAnswer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamAnswer.swift; sourceTree = "<group>"; };
 		292DAF5AB052497CB07766B3 /* AnswerOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerOption.swift; sourceTree = "<group>"; };
 		29719078A1602B9F9DD13265 /* QuestionResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionResult.swift; sourceTree = "<group>"; };
+		2B9081BB0A83C4DA7D29832D /* HealthResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthResponseDTO.swift; sourceTree = "<group>"; };
 		3025956D911848583CD9099D /* ExamLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamLanguage.swift; sourceTree = "<group>"; };
 		324D897893CDF0AC3A843725 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
 		32BFFE1634B81BDCDC16DC90 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		3A1E278B3FB352393CFCEABC /* GenerateExamRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateExamRequestDTO.swift; sourceTree = "<group>"; };
 		3CC594AE94AF21B2FBE51ABE /* PracticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeViewModel.swift; sourceTree = "<group>"; };
+		469D667F16E863C9EF21D573 /* ExamReadResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamReadResponseDTO.swift; sourceTree = "<group>"; };
+		4B46B571828F06287CC5F408 /* AnswerRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerRequestDTO.swift; sourceTree = "<group>"; };
 		52C1502B85356069061A9621 /* InterviewTrainer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "InterviewTrainer-Info.plist"; sourceTree = "<group>"; };
+		6C0E9AAC16E3453B3021D266 /* CreateExamRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateExamRequestDTO.swift; sourceTree = "<group>"; };
 		7217B44B8CF8638296FB04C1 /* PracticeDTOTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeDTOTests.swift; sourceTree = "<group>"; };
-		81FFE77ADFC38E6B8814D82B /* ExamResultResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamResultResponseDTO.swift; sourceTree = "<group>"; };
 		843D821E9F24E7BB1E9006ED /* Practice.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Practice.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8703DAC11335973F973780AD /* InterviewTrainerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewTrainerApp.swift; sourceTree = "<group>"; };
 		91F3C0B8AC8A0565CAC8E5F7 /* ExamAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamAPIService.swift; sourceTree = "<group>"; };
 		93C09CA247FE4BCC25B08FBB /* PracticeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeViewModelTests.swift; sourceTree = "<group>"; };
 		96A779836F73BB46365FFF75 /* PracticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeView.swift; sourceTree = "<group>"; };
+		97098059DA839EAE88AB19DF /* SubmitAnswerResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitAnswerResponseDTO.swift; sourceTree = "<group>"; };
 		9B75131AC8693FFE732655E0 /* InterviewTrainer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InterviewTrainer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CBE576F5523ED27D5009752 /* AnswerOptionResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerOptionResponseDTO.swift; sourceTree = "<group>"; };
 		A33A0048B77B25179111727B /* Practice-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Practice-Info.plist"; sourceTree = "<group>"; };
 		A40F1755D17A82C0CF700057 /* Home-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Home-Info.plist"; sourceTree = "<group>"; };
-		AA0D2EFE85B1B46B4DAA0E29 /* GenerateExamResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateExamResponseDTO.swift; sourceTree = "<group>"; };
 		ADC55662EAFB9762686DCB67 /* HomeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "HomeTests-Info.plist"; sourceTree = "<group>"; };
 		AF866639079E4C8F005BCC7B /* ExamAPIServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamAPIServiceTests.swift; sourceTree = "<group>"; };
 		B56D44EE265B36099A750319 /* InterviewTrainerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "InterviewTrainerTests-Info.plist"; sourceTree = "<group>"; };
 		BB52BF32707FEF2067442ACB /* InterviewTrainerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InterviewTrainerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BB774BD1F122CCDBCF55093F /* QuestionResultResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionResultResponseDTO.swift; sourceTree = "<group>"; };
 		BCAC506EFBE6D1C3AA926157 /* PracticeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PracticeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7399747D3EE1A0509EE0B54 /* ExamCreateResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamCreateResponseDTO.swift; sourceTree = "<group>"; };
 		CA72E307100839E02638AD99 /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
-		CF9879A0B7AC06B744813AAA /* SubmittedAnswerDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedAnswerDTO.swift; sourceTree = "<group>"; };
 		D0A6CA8B5B3A238A1899C3C0 /* ConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationView.swift; sourceTree = "<group>"; };
+		D20993F1F7E0D024792BF5FE /* ExamSummaryResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamSummaryResponseDTO.swift; sourceTree = "<group>"; };
 		DAA7D1A46F298E1F3D7E6891 /* PracticeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "PracticeTests-Info.plist"; sourceTree = "<group>"; };
 		E2578D09CF486C7221937772 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		E9A08E43A7B8D9E8F6B38945 /* APIConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfiguration.swift; sourceTree = "<group>"; };
+		EBF3602607DC645932D7B95F /* ExamStatusDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamStatusDTO.swift; sourceTree = "<group>"; };
+		F124BD095B6AAD720D66F061 /* AnswerResultDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerResultDTO.swift; sourceTree = "<group>"; };
 		F5D4BDBF0C971115D7C0B38F /* Exam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exam.swift; sourceTree = "<group>"; };
-		F7A28195DDFEB1E928AC0117 /* SubmitExamRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitExamRequestDTO.swift; sourceTree = "<group>"; };
 		F9128C340B712F41471774DF /* QuestionResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionResponseDTO.swift; sourceTree = "<group>"; };
 		F96CD5A3A25A3EFDC8788D90 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		F99DB7009B28B4636D3E4EEE /* AppRootViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootViewTests.swift; sourceTree = "<group>"; };
@@ -487,13 +493,16 @@
 			isa = PBXGroup;
 			children = (
 				9CBE576F5523ED27D5009752 /* AnswerOptionResponseDTO.swift */,
-				81FFE77ADFC38E6B8814D82B /* ExamResultResponseDTO.swift */,
-				3A1E278B3FB352393CFCEABC /* GenerateExamRequestDTO.swift */,
-				AA0D2EFE85B1B46B4DAA0E29 /* GenerateExamResponseDTO.swift */,
+				4B46B571828F06287CC5F408 /* AnswerRequestDTO.swift */,
+				F124BD095B6AAD720D66F061 /* AnswerResultDTO.swift */,
+				6C0E9AAC16E3453B3021D266 /* CreateExamRequestDTO.swift */,
+				C7399747D3EE1A0509EE0B54 /* ExamCreateResponseDTO.swift */,
+				469D667F16E863C9EF21D573 /* ExamReadResponseDTO.swift */,
+				EBF3602607DC645932D7B95F /* ExamStatusDTO.swift */,
+				D20993F1F7E0D024792BF5FE /* ExamSummaryResponseDTO.swift */,
+				2B9081BB0A83C4DA7D29832D /* HealthResponseDTO.swift */,
 				F9128C340B712F41471774DF /* QuestionResponseDTO.swift */,
-				BB774BD1F122CCDBCF55093F /* QuestionResultResponseDTO.swift */,
-				F7A28195DDFEB1E928AC0117 /* SubmitExamRequestDTO.swift */,
-				CF9879A0B7AC06B744813AAA /* SubmittedAnswerDTO.swift */,
+				97098059DA839EAE88AB19DF /* SubmitAnswerResponseDTO.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -724,13 +733,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				00FE178E5BCFDEC3AE708F7D /* AnswerOptionResponseDTO.swift in Sources */,
-				3CF712A3FE7E3F556CCA5204 /* ExamResultResponseDTO.swift in Sources */,
-				6DEB52DEC1EB844CCC4DB886 /* GenerateExamRequestDTO.swift in Sources */,
-				4C957E080B9A8B530666170C /* GenerateExamResponseDTO.swift in Sources */,
+				D34E1A5640A6F1418BC50C2D /* AnswerRequestDTO.swift in Sources */,
+				7053FBA3BF3EC1A3F74327E1 /* AnswerResultDTO.swift in Sources */,
+				780AC6A0BB3A03853F123BF2 /* CreateExamRequestDTO.swift in Sources */,
+				BE56F7F65DA9D720F2F0C75F /* ExamCreateResponseDTO.swift in Sources */,
+				6BF7E1A9A25E9142117C71BE /* ExamReadResponseDTO.swift in Sources */,
+				1A89C0802DFE26291103C740 /* ExamStatusDTO.swift in Sources */,
+				CF0897CCFCA5F083BBC219F2 /* ExamSummaryResponseDTO.swift in Sources */,
+				D0F7ACF70CAE65964F469406 /* HealthResponseDTO.swift in Sources */,
 				1D89FB1230BDF46652925BDE /* QuestionResponseDTO.swift in Sources */,
-				5667C70E1DF8E04026DA3990 /* QuestionResultResponseDTO.swift in Sources */,
-				02C7BA5787F744A4BE0C6205 /* SubmitExamRequestDTO.swift in Sources */,
-				AE2135A94D5CAC58E7797226 /* SubmittedAnswerDTO.swift in Sources */,
+				3B84A0E4DE033F5BF540B1CA /* SubmitAnswerResponseDTO.swift in Sources */,
 				130912AD46C56F7F512E4264 /* APIConfiguration.swift in Sources */,
 				3F135281CD722A09A0C25EA2 /* ExamAPIService.swift in Sources */,
 				A28B2D09FAA93A9400F5C55F /* ExamLanguage.swift in Sources */,
